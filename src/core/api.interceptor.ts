@@ -21,7 +21,7 @@ declare module "axios" {
 let lastStart = 0;
 let queue = Promise.resolve();
 
-const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 async function throttleStart() {
     const now = Date.now();
@@ -36,7 +36,7 @@ function enqueueThrottle() {
     return queue;
 }
 
-function parseRetryAfter(header?: string): number | null {
+export function parseRetryAfter(header?: string): number | null {
     if (!header) return null;
     const secs = Number(header);
     if (!Number.isNaN(secs)) return Math.max(0, secs * 1000);
@@ -45,7 +45,7 @@ function parseRetryAfter(header?: string): number | null {
     return null;
 }
 
-function jitterBackoff(attempt: number) {
+export function jitterBackoff(attempt: number) {
     const base = 1000 * Math.pow(2, attempt);
     const max = base * 3;
     return Math.floor(base + Math.random() * (max - base));

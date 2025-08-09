@@ -21,7 +21,7 @@
     "erasableSyntaxOnly": false,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
-
+    "types": ["jest", "node"],
     "paths": {
       "@/*": ["src/*"]
     }
