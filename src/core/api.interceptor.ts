@@ -7,7 +7,10 @@ const IDEMPOTENT = new Set(["get", "head", "options"] as const);
 
 const _axios: AxiosInstance = axios.create({
     baseURL: import.meta.env.VITE_API_BASE_URL,  // https://api.coingecko.com/api/v3
-    headers: { "Content-Type": "application/json" },
+    headers: {
+        "Content-Type": "application/json",
+        "x-cg-demo-api-key": import.meta.env.VITE_API_COIN_TOKEN
+    },
     timeout: TIMEOUT_MS,
     transitional: { clarifyTimeoutError: true },
 });
