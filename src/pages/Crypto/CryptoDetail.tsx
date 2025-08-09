@@ -22,13 +22,13 @@ import FunctionsIcon from '@mui/icons-material/Functions';
 import NumbersIcon from '@mui/icons-material/Numbers';
 import type {CryptoChartProps, IUseCryptoDataState, MarketInfoItemProps} from "@/pages/Crypto/Crypto.Types.ts";
 import {useParams} from "react-router-dom";
-import {type ComponentInfo, DataStatus} from "@/components/Status/Status.tsx";
+import Status, {type ComponentInfo, DataStatus} from "@/components/Status/Status.tsx";
 import {CryptoAPI} from "@/pages/Crypto/CryptoAPI.tsx";
 
 const StyledCard = styled(Card)(({theme}) => ({
     padding: theme.spacing(4),
     borderRadius: theme.spacing(2),
-    boxShadow: theme.shadows[3],
+    boxShadow: 'none',
     backgroundColor: theme.palette.background.paper,
 }));
 
@@ -88,7 +88,7 @@ const CryptoChart: React.FC<CryptoChartProps> = ({data, gradientId, stopColor, l
                       dot={{r: 2, stroke: lineColor, strokeWidth: 1, fill: '#fff'}}
                       activeDot={{r: 5}}
                       animationDuration={500}/>
-                <Area type="monotone" dataKey="price" stroke={'0'} fill={`url(#${gradientId})`}/>
+                {/*<Area type="monotone" dataKey="price" stroke={'0'} fill={`url(#${gradientId})`}/>*/}
             </LineChart>
         </ResponsiveContainer>
     </Paper>
@@ -110,7 +110,7 @@ const useCryptoData = (coinId: string, days: string, setComponentInfo: React.Dis
                     params: {
                         vs_currency: 'usd',
                         days,
-                        interval: days === '1' ? 'hourly' : 'daily'
+                        interval: 'daily'
                     }
                 })
             ]);
@@ -200,42 +200,17 @@ const CryptoDetailPage = () => {
     const chartData = useMemo(() => history, [history]);
 
     const toggleOptions = useMemo(() => [
-        {label: '1D', value: '1'},
         {label: '7D', value: '7'},
         {label: '30D', value: '30'},
         {label: '90D', value: '90'},
         {label: '180D', value: '180'}
     ], []);
 
-    if (componentInfo.status === DataStatus.Loading) {
-        return (
-            <Box sx={{display: 'flex', justifyContent: 'center', mt: 10}}>
-                <img alt={'loader'} src={'/loaders/loader.svg'} width={48}/>
-            </Box>
-        );
-    }
-
-    if (componentInfo.status === DataStatus.ErrorState || !crypto) {
+    if (!crypto) {
         return (
             <Box sx={{textAlign: 'center', mt: 5}}>
                 <Typography variant="h6" color="error" gutterBottom>
-                    Cannot load data at the moment.
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                    Please{' '}
-                    <Box component="span"
-                         sx={{
-                             color: 'primary.main',
-                             cursor: 'pointer',
-                             textDecoration: 'underline',
-                             display: 'inline',
-                             fontWeight: 500
-                         }}
-                         onClick={componentInfo.callback}
-                    >
-                        click here
-                    </Box>{' '}
-                    to try again.
+                    Please wait..
                 </Typography>
             </Box>
         );
@@ -253,122 +228,123 @@ const CryptoDetailPage = () => {
 
     return (
         <StyledCard>
-            <Box sx={{display: 'flex', flexDirection: {xs: 'column', md: 'row'}, gap: 4}}>
-                {/* This box acts as the first column, with a responsive width */}
-                <Box sx={{flex: {xs: '1 1 100%', md: '1 1 33.33%'}}}>
-                    <Stack direction="row" spacing={2} alignItems="center">
-                        <Avatar src={image.large} alt={name} sx={{width: 80, height: 80}}/>
-                        <Box>
-                            <Typography variant="h4" fontWeight={700}>{name} ({symbol.toUpperCase()})</Typography>
-                            <InfoLabel>{hashing_algorithm || 'No hashing algorithm provided'}</InfoLabel>
-                        </Box>
-                    </Stack>
-
-                    <Divider sx={{my: 3}}/>
-
-                    <Stack spacing={2}>
-                        {description && description.en && (
-                            <Typography variant="body1" color="text.primary"
-                                        dangerouslySetInnerHTML={{__html: description.en.split('. ')[0] + '.'}}
-                            />
-                        )}
-
-                        <Box sx={{mb: 3}}>
-                            <SectionTitle variant="h6">Market Info</SectionTitle>
-                            <Box sx={{display: 'flex', flexWrap: 'wrap', gap: 2}}>
-                                {marketInfoItems.map((item, index) => (
-                                    <MarketInfoItem key={index}
-                                                    label={item.label}
-                                                    value={item.value}
-                                                    icon={item.icon}
-                                                    color={item.color} />
-                                ))}
+            <Status componentInfos={[componentInfo]} showRetry={true}>
+                <Box sx={{display: 'flex', flexDirection: {xs: 'column', md: 'row'}, gap: 4}}>
+                    <Box sx={{flex: {xs: '1 1 100%', md: '1 1 33.33%'}}}>
+                        <Stack direction="row" spacing={2} alignItems="center">
+                            <Avatar src={image.large} alt={name} sx={{width: 80, height: 80}}/>
+                            <Box>
+                                <Typography variant="h4" fontWeight={700}>{name} ({symbol.toUpperCase()})</Typography>
+                                <InfoLabel>{hashing_algorithm || 'No hashing algorithm provided'}</InfoLabel>
                             </Box>
-                        </Box>
+                        </Stack>
 
-                        <Box sx={{mb: 4}}>
-                            <SectionTitle variant="h6">Categories</SectionTitle>
-                            <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap">
-                                {categories.map((cat: string, idx: number) => (
-                                    <Chip key={idx}
-                                          label={cat}
-                                          variant="filled"
-                                          color={'primary'}
-                                          sx={{mb: 1}}
-                                    />
-                                ))}
-                            </Stack>
-                        </Box>
+                        <Divider sx={{my: 3}}/>
 
-                        <Box>
-                            <SectionTitle variant="h6">Website</SectionTitle>
-                            <Typography component="a" href={links.homepage[0]} target="_blank" rel="noopener"
-                                        color="primary">
-                                {links.homepage[0]}
-                            </Typography>
-                        </Box>
-                    </Stack>
-                </Box>
+                        <Stack spacing={2}>
+                            {description && description.en && (
+                                <Typography variant="body1" color="text.primary"
+                                            dangerouslySetInnerHTML={{__html: description.en.split('. ')[0] + '.'}}
+                                />
+                            )}
 
-                <Box sx={{flex: {xs: '1 1 100%', md: '1 1 66.66%'}}}>
-                    <Box sx={{mb: 3}}>
-                        <SectionTitle variant="h6" sx={{mb: 1}}>Price Chart</SectionTitle>
-                        <ToggleButtonGroup value={days}
-                                           exclusive
-                                           onChange={handleDaysChange}
-                                           aria-label="Chart Range"
-                                           sx={{
-                                               flexWrap: 'wrap',
-                                               borderRadius: 2,
-                                               boxShadow: '0 2px 6px rgba(0, 0, 0, 0.06)',
-                                               backgroundColor: '#f9f9f9',
-                                               p: 0.5,
-                                               mb: 2,
-                                           }}
-                                           size="small">
-                            {toggleOptions.map(({label, value}) => (
-                                <ToggleButton key={value}
-                                              value={value}
-                                              sx={{
-                                                  border: 0,
-                                                  px: 2,
-                                                  py: 1,
-                                                  borderRadius: 2,
-                                                  textTransform: 'none',
-                                                  fontWeight: 500,
-                                                  '&.Mui-selected': {
-                                                      backgroundColor: 'primary.main',
-                                                      color: 'white',
-                                                      '&:hover': {
-                                                          backgroundColor: 'primary.dark'
-                                                      }
-                                                  },
-                                                  '&:hover': {
-                                                      backgroundColor: '#e0e0e0'
-                                                  }
-                                              }}>
-                                    {label}
-                                </ToggleButton>
-                            ))}
-                        </ToggleButtonGroup>
+                            <Box sx={{mb: 3}}>
+                                <SectionTitle variant="h6">Market Info</SectionTitle>
+                                <Box sx={{display: 'flex', flexWrap: 'wrap', gap: 2}}>
+                                    {marketInfoItems.map((item, index) => (
+                                        <MarketInfoItem key={index}
+                                                        label={item.label}
+                                                        value={item.value}
+                                                        icon={item.icon}
+                                                        color={item.color} />
+                                    ))}
+                                </Box>
+                            </Box>
+
+                            <Box sx={{mb: 4}}>
+                                <SectionTitle variant="h6">Categories</SectionTitle>
+                                <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap">
+                                    {categories.map((cat: string, idx: number) => (
+                                        <Chip key={idx}
+                                              label={cat}
+                                              variant="filled"
+                                              color={'primary'}
+                                              sx={{mb: 1}}
+                                        />
+                                    ))}
+                                </Stack>
+                            </Box>
+
+                            <Box>
+                                <SectionTitle variant="h6">Website</SectionTitle>
+                                <Typography component="a" href={links.homepage[0]} target="_blank" rel="noopener"
+                                            color="primary">
+                                    {links.homepage[0]}
+                                </Typography>
+                            </Box>
+                        </Stack>
                     </Box>
 
-                    <CryptoChart data={chartData}
-                                 gradientId="colorPrice"
-                                 stopColor="#1976d2"
-                                 lineColor="#1976d2"/>
+                    <Box sx={{flex: {xs: '1 1 100%', md: '1 1 66.66%'}}}>
+                        <Box sx={{mb: 3}}>
+                            <SectionTitle variant="h6" sx={{mb: 1}}>Price Chart</SectionTitle>
+                            <ToggleButtonGroup value={days}
+                                               exclusive
+                                               onChange={handleDaysChange}
+                                               aria-label="Chart Range"
+                                               sx={{
+                                                   flexWrap: 'wrap',
+                                                   borderRadius: 2,
+                                                   boxShadow: '0 2px 6px rgba(0, 0, 0, 0.06)',
+                                                   backgroundColor: '#f9f9f9',
+                                                   p: 0.5,
+                                                   mb: 2,
+                                               }}
+                                               size="small">
+                                {toggleOptions.map(({label, value}) => (
+                                    <ToggleButton key={value}
+                                                  value={value}
+                                                  sx={{
+                                                      border: 0,
+                                                      px: 2,
+                                                      py: 1,
+                                                      borderRadius: 2,
+                                                      textTransform: 'none',
+                                                      fontWeight: 500,
+                                                      '&.Mui-selected': {
+                                                          backgroundColor: 'primary.main',
+                                                          color: 'white',
+                                                          '&:hover': {
+                                                              backgroundColor: 'primary.dark'
+                                                          }
+                                                      },
+                                                      '&:hover': {
+                                                          backgroundColor: '#e0e0e0'
+                                                      }
+                                                  }}>
+                                        {label}
+                                    </ToggleButton>
+                                ))}
+                            </ToggleButtonGroup>
+                        </Box>
+
+                        <CryptoChart data={chartData}
+                                     gradientId="colorPrice"
+                                     stopColor="#1976d2"
+                                     lineColor="#1976d2"/>
+                    </Box>
                 </Box>
-            </Box>
 
-            {/*<Divider sx={{my: 4}}/>*/}
+                {/*<Divider sx={{my: 4}}/>*/}
 
-            {/*<Box sx={{mt: 4}}>*/}
-            {/*    <SectionTitle variant="h6">Historical Price Chart</SectionTitle>*/}
-            {/*    <CryptoChart data={chartData}*/}
-            {/*                 gradientId="colorHistorical"*/}
-            {/*                 stopColor="#8884d8"*/}
-            {/*                 lineColor="#8884d8"/>*/}
-            {/*</Box>*/}
+                {/*<Box sx={{mt: 4}}>*/}
+                {/*    <SectionTitle variant="h6">Historical Price Chart</SectionTitle>*/}
+                {/*    <CryptoChart data={chartData}*/}
+                {/*                 gradientId="colorHistorical"*/}
+                {/*                 stopColor="#8884d8"*/}
+                {/*                 lineColor="#8884d8"/>*/}
+                {/*</Box>*/}
+            </Status>
         </StyledCard>
     );
 };

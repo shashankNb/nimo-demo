@@ -1,7 +1,3 @@
-export const AppConstants = {
-    apiBasePath: import.meta.env.VITE_API_BASE_URL
-}
-
 type FormatType = 'currency' | 'decimal' | 'percent' | 'unit';
 
 interface FormatOptions {

@@ -28,13 +28,12 @@ const RootContainer = styled(Box)(({theme}) => ({
 
 const SideBanner = styled(Box)(({theme}) => ({
     width: '70%',
-    backgroundColor: theme.palette.primary.main,
     color: theme.palette.common.white,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'column',
-    padding: theme.spacing(6),
+
     minWidth: 0,
     [theme.breakpoints.down('md')]: {
         width: '100%',
@@ -79,7 +78,7 @@ const Login = () => {
             try {
                 await new Promise(resolve => setTimeout(resolve, 1500));
                 if (values.email === import.meta.env.VITE_USER_NAME && values.password === import.meta.env.VITE_USER_PASSWORD) {
-                    localStorage.setItem('LOGIN_KEY', 'user@demo.com');
+                    localStorage.setItem('LOGIN_KEY', values.email);
                     userHasAuthenticated(true);
                 } else {
                     setError('Invalid credentials. Please try again.');
@@ -102,14 +101,8 @@ const Login = () => {
             {!isMobile && (
                 <SideBanner>
                     <Box>
-                        <Typography variant="h3" fontWeight={700} mb={2}>
-                            NimoDemo
-                        </Typography>
-                        <Typography variant="h6" mb={4}>
-                            Manage attendance, leave and payroll.
-                        </Typography>
                         <img
-                            src="https://cdni.iconscout.com/illustration/premium/thumb/hr-manager-working-on-laptop-8297965-6644016.png"
+                            src="/background.png"
                             alt="illustration"
                             style={{maxWidth: '100%', height: 'auto'}}
                         />

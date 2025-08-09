@@ -11,6 +11,7 @@ import {
     type LoaderContextType,
 } from "@/core/context.ts";
 import './App.css';
+import {HistoryProvider} from "@/providers/HistoryProvider.tsx";
 
 const MainLayout = lazy(() => import("./components/Layouts/MainLayout.tsx"));
 
@@ -20,7 +21,7 @@ const useInitialAppLoad = () => {
     useEffect(() => {
         const checkAuth = () => {
             const loginKey = localStorage.getItem("LOGIN_KEY");
-            if (loginKey === 'user@demo.com') {
+            if (loginKey === import.meta.env.VITE_USER_NAME) {
                 userHasAuthenticated(true);
             } else {
                 userHasAuthenticated(false);
@@ -77,9 +78,11 @@ const App = () => {
         <>
             <AuthContext.Provider value={{isAuthenticated, userHasAuthenticated} as AuthContextType}>
                 <LoaderContext.Provider value={{preLoader, setPreLoader} as LoaderContextType}>
-                    <Routes>
-                        {appRoutes}
-                    </Routes>
+                    <HistoryProvider>
+                        <Routes>
+                            {appRoutes}
+                        </Routes>
+                    </HistoryProvider>
                 </LoaderContext.Provider>
             </AuthContext.Provider>
             {preLoader && <Loading></Loading>}

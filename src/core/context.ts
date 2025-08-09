@@ -27,3 +27,21 @@ export const LoaderContext = createContext<LoaderContextType>({
 export function useLoaderContext() {
     return useContext(LoaderContext);
 }
+
+export interface HistoryContextType {
+    history: string[];
+    pushHistory: (page: string) => void;
+    goBack: () => void;
+    getCurrentPage: () => string;
+}
+
+export const HistoryContext = createContext<HistoryContextType | undefined>({
+    history: ['/'],
+    pushHistory: () => {},
+    goBack: () => {},
+    getCurrentPage: () => '/',
+});
+
+export function useHistoryContext() {
+    return useContext(HistoryContext);
+}

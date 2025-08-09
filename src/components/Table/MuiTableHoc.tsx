@@ -30,6 +30,7 @@ import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
 import {DatePicker} from '@mui/x-date-pickers/DatePicker';
 import {format} from "date-fns";
 import {type ActiveFiltersProps, type Column, type FilterPopoverProps, type Props} from './table.types.ts'
+import Status, {DataStatus} from "@/components/Status/Status.tsx";
 
 const useTable = <T extends Record<string, any>>(data: T[], columns: Column<T>[]) => {
     const [orderBy, setOrderBy] = useState<keyof T | ''>('');
@@ -256,7 +257,7 @@ const MuiTableHOC = <T extends Record<string, any>>({
     };
 
     const currentColumn = columns.find(c => c.id === searchColumn);
-    const isLoading = componentInfos.some(item => item.status === 'Loading');
+    const isLoading = componentInfos.some(item => item.status === DataStatus.Loading);
 
     return (
         <Paper elevation={0} sx={{borderRadius: 2, border: '1px solid #dee2e6', overflow: 'hidden'}}>
@@ -355,7 +356,9 @@ const MuiTableHOC = <T extends Record<string, any>>({
                                 <TableRow>
                                     <TableCell colSpan={columns.length} align="center"
                                                sx={{padding: 4, color: '#6c757d'}}>
-                                        No records found
+                                       <Status componentInfos={componentInfos} showRetry={true}>
+                                           No records found
+                                       </Status>
                                     </TableCell>
                                 </TableRow>
                             )}

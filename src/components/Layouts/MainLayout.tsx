@@ -12,7 +12,9 @@ import {
     Tooltip,
     Typography
 } from '@mui/material';
-import {useAuthContext} from "@/core/context.ts"; // Assuming this context exists
+import {useAuthContext} from "@/core/context.ts";
+import BackButton from "@/components/Buttons/BackButton.tsx";
+import {useNavigate} from "react-router-dom"; // Assuming this context exists
 
 const MainContent = styled(Box)(({theme}) => ({
     width: '100%',
@@ -27,6 +29,7 @@ const MainContent = styled(Box)(({theme}) => ({
 const MainHeader = () => {
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
     const {userHasAuthenticated} = useAuthContext();
+    const navigate = useNavigate();
 
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElUser(event.currentTarget);
@@ -47,11 +50,17 @@ const MainHeader = () => {
     ];
 
     return (
-        <AppBar position="fixed">
+        <AppBar position="fixed" color={'inherit'}>
             <Toolbar sx={{display: 'flex', justifyContent: 'space-between'}}>
-                <Typography variant="h6" noWrap component="div">
-                    Nimo
-                </Typography>
+                <Box sx={{ display: 'flex', justifyContent: 'start', gap: 2, alignItems: 'center' }}>
+                    <BackButton></BackButton>
+                    <Box onClick={() => navigate('/')} sx={{ cursor: "pointer", display: 'flex', justifyContent: 'start', alignItems: 'center', gap: 1 }}>
+                        <img alt={'logo'} src={'/logo.png'} width={48} />
+                        <Typography fontWeight={'500'} variant="h6" noWrap component="div">
+                            NimoCrypto
+                        </Typography>
+                    </Box>
+                </Box>
                 <Box>
                     <Tooltip title="Open settings">
                         <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>

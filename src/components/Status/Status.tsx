@@ -1,7 +1,6 @@
 import React, {useCallback, useMemo} from 'react';
 import {Box, IconButton, styled, Typography} from '@mui/material';
 import RefreshIcon from "@mui/icons-material/Refresh";
-import {Image} from "@mui/icons-material";
 
 const CenteredContainer = styled(Box)({
     display: 'flex',

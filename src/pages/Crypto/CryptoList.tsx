@@ -1,7 +1,7 @@
 import MuiTableHOC from "@/components/Table/MuiTableHoc.tsx";
 import React, {useEffect, useState} from "react";
 import Status, {type ComponentInfo, DataStatus} from "@/components/Status/Status.tsx";
-import {CRYPTO_COLUMNS, CryptoAPI, CryptoConstants, CryptoUtil, DEMO_DATA} from "@/pages/Crypto/CryptoAPI.tsx";
+import {CRYPTO_COLUMNS, CryptoAPI, CryptoConstants, CryptoUtil} from "@/pages/Crypto/CryptoAPI.tsx";
 import LocalFireDepartment from '@mui/icons-material/LocalFireDepartment';
 import CurrencyExchange from '@mui/icons-material/CurrencyExchange';
 import {Avatar, Box, Card, CardContent, Chip, Grid, Typography} from "@mui/material";
@@ -15,7 +15,7 @@ import type {ICoinMarketData} from "@/pages/Crypto/Crypto.Types.ts";
 
 interface ComponentState {
     columns: Column<ICoinMarketData>[],
-    data: any[],
+    data: ICoinMarketData[],
     trendingList: TrendingItem[],
     exchangeList: TrendingItem[],
     globalData: IGlobalData
@@ -34,7 +34,7 @@ const CryptoList = () => {
 
     const [componentState, setComponentState] = useState<ComponentState>({
         columns: [],
-        data: DEMO_DATA,
+        data: [],
         trendingList: [],
         exchangeList: [],
         globalData: null
