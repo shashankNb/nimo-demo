@@ -212,6 +212,19 @@ const CryptoDetailPage = () => {
                 <Typography variant="h6" color="error" gutterBottom>
                     Please wait..
                 </Typography>
+                <span>Servers might be busy. </span>
+                <Box component="span"
+                     sx={{
+                         color: 'primary.main',
+                         cursor: 'pointer',
+                         textDecoration: 'underline',
+                         display: 'inline',
+                         fontWeight: 500
+                     }}
+                     onClick={componentInfo.callback}>
+                    click here
+                </Box>
+                <span> if its already more than 2 mins.. </span>
             </Box>
         );
     }

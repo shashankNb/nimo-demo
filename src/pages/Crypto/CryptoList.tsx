@@ -133,8 +133,9 @@ const CryptoList = () => {
         </Box>
         <Grid container spacing={2} marginBottom={2}>
             <Grid size={{xs: 12, md: 4}}>
+                <Status componentInfos={[globalCompInfo]} showRetry={true}>
                     <Card sx={{border: '2px solid #efefef', borderRadius: 5, boxShadow: 'none'}}>
-                        <Status componentInfos={[globalCompInfo]} showRetry={true}>
+
                             <CardContent>
                                 <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
                                     <Typography fontWeight={600} fontSize={20} display="flex" alignItems="center">
@@ -162,8 +163,8 @@ const CryptoList = () => {
                                         : <></>
                                 }
                             </CardContent>
-                        </Status>
                     </Card>
+                </Status>
             </Grid>
             <Grid size={{xs: 12, md: 4}}>
                 <Status componentInfos={[trendCompInfo]} showRetry={true}>
