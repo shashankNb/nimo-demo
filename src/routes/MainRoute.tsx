@@ -32,4 +32,11 @@ export const MainRoutes: Routes[] = [
         component: lazy(() => import('../pages/Auth/Login')),
         authenticatedRoute: false
     },
+    {
+        key: 'not-found',
+        path: '*',
+        name: 'Not Found',
+        component: lazy(() => import('../pages/NotFound/PageNotFound')),
+        authenticatedRoute: true
+    },
 ];

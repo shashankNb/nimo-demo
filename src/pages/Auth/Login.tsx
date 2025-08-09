@@ -47,12 +47,12 @@ const LoginPanel = styled(Paper)(({theme}) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: theme.spacing(6),
+    paddingTop: theme.spacing(6),
     minWidth: 0,
     [theme.breakpoints.down('md')]: {
         width: '100%',
         height: '60%',
-        padding: theme.spacing(4),
+        // padding: theme.spacing(4),
     },
 }));
 
