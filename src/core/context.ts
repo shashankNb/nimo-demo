@@ -1,5 +1,23 @@
 import {createContext, type Dispatch, type SetStateAction, useContext} from "react";
 
+export type IState = {
+    auth: {email: string, name: string}
+}
+
+export interface stateContextType {
+    state: IState;
+    setState: Dispatch<SetStateAction<IState>>;
+}
+
+export const stateContext = createContext<stateContextType>({
+    state: null,
+    setState: useStateContext,
+});
+
+export function useStateContext() {
+    return useContext(stateContext);
+}
+
 export interface AuthContextType {
     isAuthenticated: boolean;
     userHasAuthenticated: Dispatch<SetStateAction<boolean>>;

@@ -12,7 +12,7 @@ import {
     Tooltip,
     Typography
 } from '@mui/material';
-import {useAuthContext} from "@/core/context.ts";
+import {useAuthContext, useStateContext} from "@/core/context.ts";
 import BackButton from "@/components/Buttons/BackButton.tsx";
 import {useNavigate} from "react-router-dom"; // Assuming this context exists
 
@@ -30,6 +30,7 @@ const MainHeader = () => {
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
     const {userHasAuthenticated} = useAuthContext();
     const navigate = useNavigate();
+    const {state} = useStateContext();
 
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElUser(event.currentTarget);
@@ -62,12 +63,15 @@ const MainHeader = () => {
                     </Box>
                 </Box>
                 <Box>
-                    <Tooltip title="User Profile">
-                        <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
-                            <Avatar alt="User Avatar"
-                                    src="https://png.pngtree.com/png-clipart/20200224/original/pngtree-cartoon-color-simple-male-avatar-png-image_5230557.jpg" />
-                        </IconButton>
-                    </Tooltip>
+                    <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1, alignItems: 'center' }}>
+                        <Tooltip title="User Profile">
+                            <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
+                                <Avatar alt="User Avatar"
+                                        src="https://png.pngtree.com/png-clipart/20200224/original/pngtree-cartoon-color-simple-male-avatar-png-image_5230557.jpg" />
+                            </IconButton>
+                        </Tooltip>
+                        <Typography>{state.auth.name}</Typography>
+                    </Box>
                     <Menu sx={{mt: '45px'}}
                           id="menu-appbar"
                           anchorEl={anchorElUser}
