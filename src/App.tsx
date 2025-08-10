@@ -39,12 +39,7 @@ const useInitialAppLoad = (setState: Dispatch<SetStateAction<IState>>) => {
 };
 
 const App = () => {
-    const [state, setState] = useState<IState>({
-        auth: {
-            email: null,
-            name: null
-        }
-    });
+    const [state, setState] = useState<IState>({ auth: { email: null, name: null }});
     const {isAuthenticated, userHasAuthenticated} = useInitialAppLoad(setState);
     const [preLoader, setPreLoader] = useState<boolean>(false);
 
@@ -88,7 +83,7 @@ const App = () => {
                     );
                 }
             })
-        , []);
+        , [MainRoutes]);
 
     return (
         <>
