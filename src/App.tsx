@@ -25,7 +25,7 @@ const useInitialAppLoad = (setState: Dispatch<SetStateAction<IState>>) => {
             if (loginKey === import.meta.env.VITE_USER_NAME) {
                 setState(prevState => ({
                     ...prevState,
-                    auth: {email: 'user@demo.com', name: 'Demo User'}
+                    auth: {email: import.meta.env.VITE_USER_NAME, name: 'Demo User'}
                 }));
                 userHasAuthenticated(true);
             } else {

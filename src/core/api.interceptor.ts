@@ -26,7 +26,7 @@ let queue = Promise.resolve();
 
 export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
-async function throttleStart() {
+async function throttleStart(): Promise<void> {
     const now = Date.now();
     const scheduled = Math.max(now, lastStart + MIN_GAP_MS);
     const wait = scheduled - now;
@@ -48,7 +48,7 @@ export function parseRetryAfter(header?: string): number | null {
     return null;
 }
 
-export function jitterBackoff(attempt: number) {
+export function jitterBackoff(attempt: number): number {
     const base = 1000 * Math.pow(2, attempt);
     const max = base * 3;
     return Math.floor(base + Math.random() * (max - base));

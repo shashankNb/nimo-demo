@@ -57,7 +57,7 @@ const CryptoList = () => {
         status: DataStatus.Loaded
     });
 
-    const buildColumns = () => {
+    const buildColumns = (): Column<ICoinMarketData>[] => {
         const columns: { [key: string]: Column<ICoinMarketData> } = CRYPTO_COLUMNS;
         columns.name = {
             ...columns.name,
@@ -73,7 +73,7 @@ const CryptoList = () => {
         return Object.keys(columns).map(key => columns[key]);
     }
 
-    const fetchGlobalData = () => {
+    const fetchGlobalData = (): void => {
         setGlobalCompInfo(prev => ({...prev, status: DataStatus.Loading}));
         CryptoAPI.fetchGlobalMarket().then((response: AxiosResponse) => {
             const globalMarketData = CryptoUtil.prepareGlobalMarketPayload(response.data);
@@ -85,7 +85,7 @@ const CryptoList = () => {
         })
     }
 
-    const fetchExchange = () => {
+    const fetchExchange = (): void => {
         setExchangeCompInfo(prev => ({...prev, status: DataStatus.Loading}));
         CryptoAPI.fetchExchangeData().then((response: AxiosResponse) => {
             const trendingList = CryptoUtil.prepareExchangePayload(response.data);
@@ -97,7 +97,7 @@ const CryptoList = () => {
         })
     }
 
-    const fetchTrending = () => {
+    const fetchTrending = (): void => {
         setTrendCompInfo(prev => ({...prev, status: DataStatus.Loading}));
         CryptoAPI.fetchTrendingData().then((response: AxiosResponse) => {
             const trendingList = CryptoUtil.prepareTrendingPayload(response.data);
@@ -109,7 +109,7 @@ const CryptoList = () => {
         });
     }
 
-    const fetchCryptoList = () => {
+    const fetchCryptoList = (): void => {
         setTableComponentInfo(prev => ({...prev, status: DataStatus.Loading}));
         CryptoAPI.fetchCryptoList(CryptoConstants.coinsListConfig).then((response: AxiosResponse) => {
             setComponentState(prev => ({...prev, data: response.data }));

@@ -24,6 +24,7 @@ import type {CryptoChartProps, IUseCryptoDataState, MarketInfoItemProps} from "@
 import {useParams} from "react-router-dom";
 import Status, {type ComponentInfo, DataStatus} from "@/components/Status/Status.tsx";
 import {CryptoAPI} from "@/pages/Crypto/CryptoAPI.tsx";
+import {formatNumber} from "@/utils/app.util.ts";
 
 const StyledCard = styled(Card)(({theme}) => ({
     padding: theme.spacing(4),
@@ -70,7 +71,7 @@ const CryptoChart: React.FC<CryptoChartProps> = ({data, gradientId, stopColor, l
                        axisLine={{stroke: '#e0e0e0'}}
                        hide={data.length > 20}/>
                 <YAxis domain={['auto', 'auto']}
-                       tickFormatter={(val) => `$${val.toLocaleString()}`}
+                       tickFormatter={(val) => formatNumber(val, {type: 'currency'})}
                        tick={{fontSize: 12}}
                        tickLine={false}
                        axisLine={{stroke: '#e0e0e0'}}/>
@@ -80,7 +81,7 @@ const CryptoChart: React.FC<CryptoChartProps> = ({data, gradientId, stopColor, l
                     boxShadow: '0px 2px 8px rgba(0,0,0,0.05)'
                 }}
                          labelStyle={{fontWeight: 600, color: '#555'}}
-                         formatter={(value: number) => [`$${value.toLocaleString()}`, 'Price']}/>
+                         formatter={(value: number) => [formatNumber(value, {type: 'currency'}), 'Price']}/>
                 <Line type="monotone"
                       dataKey="price"
                       stroke={lineColor}
@@ -154,43 +155,43 @@ const CryptoDetailPage = () => {
         return [
             {
                 label: 'Current Price',
-                value: `$${crypto.market_data.current_price.usd.toLocaleString()}`,
+                value: formatNumber(crypto.market_data.current_price.usd, {type: 'currency'}),
                 icon: <MonetizationOnIcon/>,
                 color: 'primary.main',
             },
             {
                 label: 'Market Cap',
-                value: `$${crypto.market_data.market_cap.usd.toLocaleString()}`,
+                value: formatNumber(crypto.market_data.market_cap.usd, {type: 'currency'}),
                 icon: <AccountBalanceIcon/>,
                 color: 'secondary.main',
             },
             {
                 label: '24h High',
-                value: `$${crypto.market_data.high_24h.usd.toLocaleString()}`,
+                value: formatNumber(crypto.market_data.high_24h.usd, {type: 'currency'}),
                 icon: <TrendingUpIcon/>,
                 color: 'success.main',
             },
             {
                 label: '24h Low',
-                value: `$${crypto.market_data.low_24h.usd.toLocaleString()}`,
+                value: formatNumber(crypto.market_data.low_24h.usd, {type: 'currency'}),
                 icon: <TrendingDownIcon/>,
                 color: 'error.main',
             },
             {
                 label: 'Circulating Supply',
-                value: `${crypto.market_data.circulating_supply.toLocaleString()}`,
+                value: formatNumber(crypto.market_data.circulating_supply),
                 icon: <CachedIcon/>,
                 color: 'info.main',
             },
             {
                 label: 'Total Supply',
-                value: crypto.market_data.total_supply ? crypto.market_data.total_supply.toLocaleString() : 'N/A',
+                value: crypto.market_data.total_supply ? formatNumber(crypto.market_data.total_supply) : 'N/A',
                 icon: <FunctionsIcon/>,
                 color: 'warning.main',
             },
             {
                 label: 'Max Supply',
-                value: crypto.market_data.max_supply ? crypto.market_data.max_supply.toLocaleString() : 'N/A',
+                value: crypto.market_data.max_supply ? formatNumber(crypto.market_data.max_supply) : 'N/A',
                 icon: <NumbersIcon/>,
                 color: 'text.secondary',
             },
