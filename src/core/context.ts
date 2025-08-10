@@ -1,7 +1,7 @@
 import {createContext, type Dispatch, type SetStateAction, useContext} from "react";
 
 export type IState = {
-    auth: {email: string, name: string}
+    auth: {email: string | null, name: string | null}
 }
 
 export interface stateContextType {
@@ -9,13 +9,15 @@ export interface stateContextType {
     setState: Dispatch<SetStateAction<IState>>;
 }
 
-export const stateContext = createContext<stateContextType>({
+export const stateContext = createContext<stateContextType | undefined>({
     state: null,
     setState: useStateContext,
 });
 
 export function useStateContext() {
-    return useContext(stateContext);
+    const ctx = useContext(stateContext);
+    if (!ctx) throw new Error("useStateContext must be used within a StateContext.Provider");
+    return ctx;
 }
 
 export interface AuthContextType {
@@ -23,27 +25,31 @@ export interface AuthContextType {
     userHasAuthenticated: Dispatch<SetStateAction<boolean>>;
 }
 
-export const AuthContext = createContext<AuthContextType>({
+export const AuthContext = createContext<AuthContextType | undefined>({
     isAuthenticated: false,
     userHasAuthenticated: useAuthContext,
 });
 
 export function useAuthContext() {
-    return useContext(AuthContext);
+    const ctx = useContext(AuthContext);
+    if (!ctx) throw new Error("useAuthContext must be used within an AuthContext.Provider");
+    return ctx;
 }
 
 export interface LoaderContextType {
-    preLoader: any;
+    preLoader: boolean;
     setPreLoader: Dispatch<SetStateAction<boolean>>;
 }
 
-export const LoaderContext = createContext<LoaderContextType>({
-    preLoader: null,
+export const LoaderContext = createContext<LoaderContextType | undefined>({
+    preLoader: false,
     setPreLoader: useLoaderContext,
 });
 
-export function useLoaderContext() {
-    return useContext(LoaderContext);
+export function useLoaderContext(): LoaderContextType {
+    const ctx = useContext(LoaderContext);
+    if (!ctx) throw new Error("useLoaderContext must be used within a LoaderContext.Provider");
+    return ctx;
 }
 
 export interface HistoryContextType {
@@ -61,5 +67,7 @@ export const HistoryContext = createContext<HistoryContextType | undefined>({
 });
 
 export function useHistoryContext() {
-    return useContext(HistoryContext);
+    const ctx = useContext(HistoryContext);
+    if (!ctx) throw new Error("useHistoryContext must be used within a HistoryContext.Provider");
+    return ctx;
 }

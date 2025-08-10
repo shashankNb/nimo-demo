@@ -26,7 +26,7 @@ const useInitialAppLoad = (setState: Dispatch<SetStateAction<IState>>) => {
                 setState(prevState => ({
                     ...prevState,
                     auth: {email: 'user@demo.com', name: 'Demo User'}
-                }))
+                }));
                 userHasAuthenticated(true);
             } else {
                 userHasAuthenticated(false);
@@ -47,6 +47,10 @@ const App = () => {
     });
     const {isAuthenticated, userHasAuthenticated} = useInitialAppLoad(setState);
     const [preLoader, setPreLoader] = useState<boolean>(false);
+
+    const AuthVal = useMemo(() => ({ isAuthenticated, userHasAuthenticated }), [isAuthenticated, userHasAuthenticated]);
+    const StateVal = useMemo(() => ({ state, setState }), [state]);
+    const PreLoaderVal = useMemo(() => ({ preLoader, setPreLoader }), [preLoader]);
 
 
     const appRoutes = useMemo(() =>
@@ -88,9 +92,9 @@ const App = () => {
 
     return (
         <>
-            <AuthContext.Provider value={{isAuthenticated, userHasAuthenticated} as AuthContextType}>
-                <stateContext.Provider value={{state, setState} as stateContextType}>
-                    <LoaderContext.Provider value={{preLoader, setPreLoader} as LoaderContextType}>
+            <AuthContext.Provider value={AuthVal}>
+                <stateContext.Provider value={StateVal}>
+                    <LoaderContext.Provider value={PreLoaderVal}>
                         <HistoryProvider>
                             <Routes>
                                 {appRoutes}

@@ -4,8 +4,8 @@ import {Button, Tooltip} from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {useHistoryContext, useLoaderContext} from "@/core/context.ts";
 
-const BackButton: React.FC = () => {
-    const {history, goBack} = useHistoryContext();
+const BackButton = () => {
+    const {history, goBack, getCurrentPage} = useHistoryContext();
     const navigate = useNavigate();
     const {setPreLoader} = useLoaderContext();
 
@@ -25,7 +25,7 @@ const BackButton: React.FC = () => {
     const canGoBack = history.length > 1;
 
     return (
-        canGoBack && (
+        canGoBack && getCurrentPage() !== '/' && (
             <Tooltip title="Go back to the previous page" arrow>
                 <span>
                     <Button startIcon={<ArrowBackIcon/>}

@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
-import {useAuthContext, useLoaderContext} from "@/core/context.ts";
+import {useAuthContext, useLoaderContext, useStateContext} from "@/core/context.ts";
 
 
 const RootContainer = styled(Box)(({theme}) => ({
@@ -61,6 +61,7 @@ const Login = () => {
     const {setPreLoader} = useLoaderContext();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const {setState} = useStateContext();
 
     const formik = useFormik({
         initialValues: {
@@ -79,6 +80,10 @@ const Login = () => {
                 await new Promise(resolve => setTimeout(resolve, 1500));
                 if (values.email === import.meta.env.VITE_USER_NAME && values.password === import.meta.env.VITE_USER_PASSWORD) {
                     localStorage.setItem('LOGIN_KEY', values.email);
+                    setState(prevState => ({
+                        ...prevState,
+                        auth: {email: 'user@demo.com', name: 'Demo User'}
+                    }))
                     userHasAuthenticated(true);
                 } else {
                     setError('Invalid credentials. Please try again.');
